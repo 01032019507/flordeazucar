@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flor de Azúcar - Dulzura que se ve, se siente y se saborea</title>
+    <!-- Carga de Tailwind CSS para estilos rápidos y responsivos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Configuración de la fuente Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF5F7; /* Un rosa muy claro, casi blanco, para un toque dulce */
+            color: #333;
+            scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en los enlaces de navegación */
+        }
+        /* Estilos personalizados para el degradado del botón */
+        .btn-gradient {
+            background-image: linear-gradient(to right, #FF7E5F, #FEB47B);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            background-image: linear-gradient(to right, #FEAB82, #FF9B61);
+            box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4);
+        }
+        /* Estilo para los íconos de Misión y Visión */
+        .icon-md {
+            font-size: 2.5rem; /* Tamaño más grande para los íconos */
+            color: #FF6B81; /* Color rosa vibrante */
+        }
+        /* Estilo para la barra de navegación pegajosa */
+        .navbar-sticky {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(8px); /* Efecto de desenfoque para el fondo */
+            background-color: rgba(255, 245, 247, 0.8); /* Fondo semi-transparente */
+        }
+        /* Estilos para el carrusel de testimonios */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 9999px; /* Fully rounded */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .carousel-button.prev {
+            left: 1rem;
+        }
+        .carousel-button.next {
+            right: 1rem;
+        }
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #FFB6C1;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .carousel-dot.active {
+            background-color: #FF6B81;
+        }
+
+        /* Nuevos estilos para fondos de sección con imágenes */
+        #inicio {
+            background-image: url('https://i.pinimg.com/736x/1c/35/f1/1c35f1a75666100e0b0be55b2d8ca8ed.jpg'); /* Nueva imagen para el inicio */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        #mision-vision {
+            background-image: url('https://i.pinimg.com/1200x/f2/b4/b5/f2b4b559ed9ba379286e5b39fcf6ed32.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+        }
+        #mision-vision::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 245, 247, 0.7); /* Capa semi-transparente sobre la imagen */
+            z-index: 1;
+        }
+        #mision-vision > div { /* Asegura que el contenido esté sobre la capa */
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Barra de Navegación -->
+    <nav class="navbar-sticky p-4 shadow-md">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#inicio" class="text-2xl font-bold text-pink-700 hover:text-pink-900 transition-colors duration-300">Flor de Azúcar</a>
+            <div class="space-x-6 hidden md:flex">
+                <a href="#inicio" class="text-gray-700 hover:text-pink-700 font-medium transition-colors duration-300">Inicio</a>
+                <a href="#suscripciones" class="text-gray-700 hover:text-pink-700 font-medium transition-colors duration-300">Suscripciones</a>
+                <a href="#quienes-somos" class="text-gray-700 hover:text-pink-700 font-medium transition-colors duration-300">Quiénes Somos</a>
+                <a href="#testimonios" class="text-gray-700 hover:text-pink-700 font-medium transition-colors duration-300">Testimonios</a>
+                <a href="#pedido-personalizado" class="text-gray-700 hover:text-pink-700 font-medium transition-colors duration-300">Pedido Personalizado</a>
+                <a href="#contacto" class="text-gray-700 hover:text-pink-700 font-medium transition-colors duration-300">Contacto</a>
+            </div>
+            <!-- Botón de menú para móviles -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 hover:text-pink-700 focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        <!-- Menú móvil desplegable -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2 text-center">
+            <a href="#inicio" class="block text-gray-700 hover:text-pink-700 font-medium py-2 transition-colors duration-300">Inicio</a>
+            <a href="#suscripciones" class="block text-gray-700 hover:text-pink-700 font-medium py-2 transition-colors duration-300">Suscripciones</a>
+            <a href="#quienes-somos" class="block text-gray-700 hover:text-pink-700 font-medium py-2 transition-colors duration-300">Quiénes Somos</a>
+            <a href="#testimonios" class="block text-gray-700 hover:text-pink-700 font-medium py-2 transition-colors duration-300">Testimonios</a>
+            <a href="#pedido-personalizado" class="block text-gray-700 hover:text-pink-700 font-medium py-2 transition-colors duration-300">Pedido Personalizado</a>
+            <a href="#contacto" class="block text-gray-700 hover:text-pink-700 font-medium py-2 transition-colors duration-300">Contacto</a>
+        </div>
+    </nav>
+
+    <!-- Sección de Inicio (Home) -->
+    <section id="inicio" class="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        <!-- La imagen de fondo ahora se controla con CSS en el head -->
+        <div class="absolute inset-0 bg-black bg-opacity-30"></div> <!-- Capa oscura para mejor contraste -->
+
+        <div class="relative z-10 p-8 bg-white bg-opacity-80 rounded-xl shadow-2xl max-w-3xl mx-auto">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-pink-700 mb-6 leading-tight">
+                "Donde cada pétalo cuenta una historia de amor."
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-700 mb-8">
+                Transformamos tus sentimientos en arreglos florales y dulces inolvidables.
+            </p>
+            <a href="https://beacons.ai/flordeazucar_panama" target="_blank" class="btn-gradient text-white font-bold py-4 px-10 rounded-full shadow-lg hover:scale-105 transform transition-transform duration-300">
+                Explora Nuestro Catálogo
+            </a>
+        </div>
+    </section>
+
+    <!-- Sección de Suscripciones -->
+    <section id="suscripciones" class="py-16 px-4 bg-pink-100">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-pink-700 mb-12">Recibe amor cada mes</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Plan Básico - Flor del Mes -->
+                <div class="bg-white p-8 rounded-xl shadow-xl flex flex-col items-center border-t-4 border-pink-400 transform hover:scale-105 transition-transform duration-300">
+                    <span class="icon-md text-pink-500 mb-4">🌸</span>
+                    <h3 class="text-3xl font-semibold text-pink-600 mb-4">Básico - "Flor del Mes"</h3>
+                    <p class="text-gray-600 mb-6 text-lg">Un mini bouquet elegante para alegrar tus días.</p>
+                    <div class="text-5xl font-bold text-pink-700 mb-6">$15<span class="text-xl font-normal text-gray-500">/mes</span></div>
+                    <ul class="text-left text-gray-700 space-y-2 mb-8 list-disc list-inside">
+                        <li>Entrega mensual sencilla</li>
+                        <li>Selección exclusiva de la flor del mes</li>
+                        <li>Ideal para un toque de frescura constante</li>
+                    </ul>
+                    <button class="btn-gradient text-white font-bold py-3 px-8 rounded-full shadow-md hover:shadow-lg">
+                        Suscribirme
+                    </button>
+                </div>
+
+                <!-- Plan Estándar - Dulce Detalle -->
+                <div class="bg-white p-8 rounded-xl shadow-xl flex flex-col items-center border-t-4 border-pink-600 transform hover:scale-105 transition-transform duration-300">
+                    <span class="icon-md text-pink-600 mb-4">🍰</span>
+                    <h3 class="text-3xl font-semibold text-pink-700 mb-4">Estándar - "Dulce Detalle"</h3>
+                    <p class="text-gray-600 mb-6 text-lg">Arreglo floral combinado con un delicioso postre.</p>
+                    <div class="text-5xl font-bold text-pink-700 mb-6">$25<span class="text-xl font-normal text-gray-500">/mes</span></div>
+                    <ul class="text-left text-gray-700 space-y-2 mb-8 list-disc list-inside">
+                        <li>Arreglo floral mediano</li>
+                        <li>Postre artesanal sorpresa</li>
+                        <li>Incluye QR con dedicatoria personalizada</li>
+                        <li>Perfecto para regalar o consentirte</li>
+                    </ul>
+                    <button class="btn-gradient text-white font-bold py-3 px-8 rounded-full shadow-md hover:shadow-lg">
+                        Suscribirme
+                    </button>
+                </div>
+
+                <!-- Plan Premium - Amor Completo -->
+                <div class="bg-white p-8 rounded-xl shadow-xl flex flex-col items-center border-t-4 border-pink-800 transform hover:scale-105 transition-transform duration-300">
+                    <span class="icon-md text-pink-700 mb-4">💖</span>
+                    <h3 class="text-3xl font-semibold text-pink-800 mb-4">Premium - "Amor Completo"</h3>
+                    <p class="text-gray-600 mb-6 text-lg">La experiencia más lujosa y personalizada de Flor de Azúcar.</p>
+                    <div class="text-5xl font-bold text-pink-700 mb-6">$40<span class="text-xl font-normal text-gray-500">/mes</span></div>
+                    <ul class="text-left text-gray-700 space-y-2 mb-8 list-disc list-inside">
+                        <li>Arreglo floral premium y exclusivo</li>
+                        <li>Caja personalizada con detalles únicos</li>
+                        <li>Postre gourmet de alta calidad</li>
+                        <li>Música ambiental sugerida o personalizada</li>
+                        <li>Tarjeta especial con diseño a elección</li>
+                        <li>Personalización total de la experiencia</li>
+                    </ul>
+                    <button class="btn-gradient text-white font-bold py-3 px-8 rounded-full shadow-md hover:shadow-lg">
+                        Suscribirme
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Quiénes Somos -->
+    <section id="quienes-somos" class="py-16 px-4 bg-white">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+            <div class="md:w-1/2 text-center md:text-left">
+                <h2 class="text-4xl md:text-5xl font-bold text-pink-700 mb-8">Quiénes Somos</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                    En Flor de Azúcar creamos momentos inolvidables a través de arreglos florales y dulces personalizados. Nacimos con la idea de regalar emociones y transformar un simple detalle en una experiencia sensorial única.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    Nuestro equipo se dedica con pasión a cada creación, asegurando que cada entrega lleve consigo un pedacito de dulzura y alegría.
+                </p>
+            </div>
+            <div class="md:w-1/2">
+                <!-- Imagen de "Quiénes Somos" actualizada con la URL proporcionada -->
+                <img src="https://i.pinimg.com/736x/05/f9/50/05f950b858d2729bf3787bc64c1313e6.jpg" alt="Mano de mujer preparando un bouquet en floristería" class="rounded-xl shadow-xl w-full h-auto object-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Misión y Visión -->
+    <section id="mision-vision" class="py-16 px-4 bg-pink-50">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-pink-700 mb-12">Nuestra Esencia</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Misión -->
+                <div class="bg-white p-8 rounded-xl shadow-xl flex flex-col items-center">
+                    <span class="icon-md text-pink-500 mb-4">❤️</span> <!-- Corazón -->
+                    <h3 class="text-3xl font-semibold text-pink-600 mb-4">Misión</h3>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        Crear experiencias agradables que estimulen los sentidos mediante olores, sabores y colores únicos, transformando cada regalo en un momento inolvidable.
+                    </p>
+                </div>
+
+                <!-- Visión -->
+                <div class="bg-white p-8 rounded-xl shadow-xl flex flex-col items-center">
+                    <span class="icon-md text-pink-600 mb-4">🌟</span> <!-- Estrella/Flor -->
+                    <h3 class="text-3xl font-semibold text-pink-700 mb-4">Visión</h3>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        Ser la marca líder en regalos personalizados en Panamá, reconocida por nuestra creatividad, calidad excepcional y la capacidad de conectar emocionalmente con nuestros clientes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nueva Sección: Testimonios -->
+    <section id="testimonios" class="py-16 px-4 bg-pink-50">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-pink-700 mb-12">Lo que dicen nuestros clientes</h2>
+
+            <div class="carousel-container relative">
+                <div class="carousel-track" id="testimonial-carousel-track">
+                    <!-- Testimonio 1 -->
+                    <div class="carousel-item p-8 bg-white rounded-xl shadow-xl mx-4 flex flex-col items-center">
+                        <img src="https://i.pinimg.com/736x/62/d1/b6/62d1b6526b933c8f0ed4a1b1c78ecf02.jpg" alt="Cliente feliz recibiendo flores 1" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-pink-300">
+                        <p class="text-lg text-gray-700 italic mb-6">"¡Absolutamente hermoso! El arreglo superó mis expectativas y el postre fue delicioso. ¡Un servicio impecable!"</p>
+                        <p class="font-semibold text-pink-600">- María P.</p>
+                    </div>
+                    <!-- Testimonio 2 -->
+                    <div class="carousel-item p-8 bg-white rounded-xl shadow-xl mx-4 flex flex-col items-center">
+                        <img src="https://i.pinimg.com/1200x/1b/e4/b6/1be4b689c8bc90010c44d3ddce922fa9.jpg" alt="Cliente feliz recibiendo flores 2" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-pink-300">
+                        <p class="text-lg text-gray-700 italic mb-6">"Siempre confío en Flor de Azúcar para mis regalos especiales. La atención al detalle y la calidad son inigualables."</p>
+                        <p class="font-semibold text-pink-600">- Juan S.</p>
+                    </div>
+                    <!-- Testimonio 3 -->
+                    <div class="carousel-item p-8 bg-white rounded-xl shadow-xl mx-4 flex flex-col items-center">
+                        <img src="https://i.pinimg.com/736x/ee/bd/d8/eebdd811c24049b71916a8a3e555f500.jpg" alt="Cliente feliz recibiendo flores 3" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-pink-300">
+                        <p class="text-lg text-gray-700 italic mb-6">"Mi suscripción mensual es mi pequeño lujo. ¡Cada mes es una sorpresa encantadora y fresca!"</p>
+                        <p class="font-semibold text-pink-600">- Ana G.</p>
+                    </div>
+                     <!-- Testimonio 4 (usando la imagen de la chica con el bouquet) -->
+                    <div class="carousel-item p-8 bg-white rounded-xl shadow-xl mx-4 flex flex-col items-center">
+                        <img src="uploaded:image_18c848.jpg-b1bbcff8-3d75-4919-8400-8155ac3276d5" alt="Cliente feliz recibiendo flores 4" class="w-24 h-24 rounded-full object-cover mb-4 border-4 border-pink-300">
+                        <p class="text-lg text-gray-700 italic mb-6">"Los detalles personalizados hacen toda la diferencia. ¡Flor de Azúcar sabe cómo sorprender!"</p>
+                        <p class="font-semibold text-pink-600">- Laura M.</p>
+                    </div>
+                </div>
+                <button class="carousel-button prev left-0" id="prev-testimonial">
+                    <i class="fas fa-chevron-left text-pink-700"></i>
+                </button>
+                <button class="carousel-button next right-0" id="next-testimonial">
+                    <i class="fas fa-chevron-right text-pink-700"></i>
+                </button>
+            </div>
+            <div class="carousel-dots" id="testimonial-dots"></div>
+        </div>
+    </section>
+
+    <!-- Nueva Sección: Crea tu momento especial (Formulario de Pedido Personalizado) -->
+    <section id="pedido-personalizado" class="py-16 px-4 bg-pink-100">
+        <div class="max-w-3xl mx-auto text-center bg-white p-8 rounded-xl shadow-xl">
+            <h2 class="text-4xl md:text-5xl font-bold text-pink-700 mb-8">Crea tu momento especial</h2>
+            <p class="text-lg text-gray-700 mb-8">¿Tienes una idea única? Cuéntanos qué necesitas y diseñaremos el arreglo perfecto para ti.</p>
+
+            <form class="space-y-6">
+                <div>
+                    <label for="nombre" class="block text-left text-gray-700 text-lg font-medium mb-2">Tu Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" class="w-full p-3 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200" placeholder="Ej: María López" required>
+                </div>
+                <div>
+                    <label for="email" class="block text-left text-gray-700 text-lg font-medium mb-2">Tu Email:</label>
+                    <input type="email" id="email" name="email" class="w-full p-3 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200" placeholder="Ej: tuemail@ejemplo.com" required>
+                </div>
+                <div>
+                    <label for="tipo_arreglo" class="block text-left text-gray-700 text-lg font-medium mb-2">Tipo de Arreglo (ej. Bouquet, caja, fresas cubiertas):</label>
+                    <input type="text" id="tipo_arreglo" name="tipo_arreglo" class="w-full p-3 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200" placeholder="Ej: Bouquet de rosas rojas">
+                </div>
+                <div>
+                    <label for="ocasion" class="block text-left text-gray-700 text-lg font-medium mb-2">Ocasión (ej. Cumpleaños, Aniversario):</label>
+                    <input type="text" id="ocasion" name="ocasion" class="w-full p-3 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200" placeholder="Ej: Aniversario de bodas">
+                </div>
+                <div>
+                    <label for="detalles" class="block text-left text-gray-700 text-lg font-medium mb-2">Detalles Adicionales / Ideas:</label>
+                    <textarea id="detalles" name="detalles" rows="5" class="w-full p-3 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200" placeholder="Cuéntanos tus preferencias de colores, flores, dulces, o cualquier idea especial."></textarea>
+                </div>
+                <button type="submit" class="btn-gradient text-white font-bold py-3 px-8 rounded-full shadow-lg hover:scale-105 transform transition-transform duration-300">
+                    Enviar Solicitud
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Sección Contacto -->
+    <section id="contacto" class="py-16 px-4 bg-pink-200">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-pink-700 mb-8">Contáctanos</h2>
+            <p class="text-xl text-gray-700 mb-4">¿Listo para crear un momento inolvidable?</p>
+
+            <div class="flex flex-col items-center space-y-4 mb-8">
+                <a href="mailto:contacto@flordeazucar.com" class="text-pink-700 hover:underline text-lg md:text-xl">
+                    <i class="fas fa-envelope mr-2"></i> contacto@flordeazucar.com
+                </a>
+                <a href="https://wa.me/50763849705" target="_blank" class="text-pink-700 hover:underline text-lg md:text-xl">
+                    <i class="fab fa-whatsapp mr-2"></i> +507 6384-9705
+                </a>
+            </div>
+
+            <div class="flex justify-center space-x-6">
+                <a href="https://www.instagram.com/flordeazucar_panama" target="_blank" class="text-pink-700 hover:text-pink-900 transition-colors duration-300">
+                    <i class="fab fa-instagram text-4xl"></i>
+                </a>
+                <a href="https://wa.me/50763849705" target="_blank" class="text-pink-700 hover:text-pink-900 transition-colors duration-300">
+                    <i class="fab fa-whatsapp text-4xl"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer opcional -->
+    <footer class="bg-pink-700 text-white py-8 text-center">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>&copy; 2025 Flor de Azúcar. Todos los derechos reservados.</p>
+            <p class="mt-2 text-sm">Diseñado con 💖 para momentos especiales.</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript para el menú móvil
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Ocultar el menú móvil al hacer clic en un enlace
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // JavaScript para el carrusel de testimonios
+        const carouselTrack = document.getElementById('testimonial-carousel-track');
+        const testimonialItems = document.querySelectorAll('.carousel-item');
+        const prevButton = document.getElementById('prev-testimonial');
+        const nextButton = document.getElementById('next-testimonial');
+        const dotsContainer = document.getElementById('testimonial-dots');
+
+        let currentIndex = 0;
+        const totalItems = testimonialItems.length;
+
+        // Create dots
+        for (let i = 0; i < totalItems; i++) {
+            const dot = document.createElement('span');
+            dot.classList.add('carousel-dot');
+            dot.addEventListener('click', () => moveToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function updateCarousel() {
+            const itemWidth = testimonialItems[0].clientWidth + (parseInt(getComputedStyle(testimonialItems[0]).marginRight) * 2); // Item width + margin
+            carouselTrack.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function moveToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        prevButton.addEventListener('click', () => {
+            currentIndex = (currentIndex === 0) ? totalItems - 1 : currentIndex - 1;
+            updateCarousel();
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentIndex = (currentIndex === totalItems - 1) ? 0 : currentIndex + 1;
+            updateCarousel();
+        });
+
+        // Initial update
+        updateCarousel();
+
+        // Optional: Auto-slide
+        // setInterval(() => {
+        //     currentIndex = (currentIndex === totalItems - 1) ? 0 : currentIndex + 1;
+        //     updateCarousel();
+        // }, 5000); // Change slide every 5 seconds
+
+        // Adjust carousel on window resize
+        window.addEventListener('resize', updateCarousel);
+    </script>
+
+</body>
+</html>
